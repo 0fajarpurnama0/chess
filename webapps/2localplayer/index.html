@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>2 Player Local</title>
+  <link rel="stylesheet" href="../lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>♟️ Type & Play</h1>
+  <div id="status">White to move</div>
+
+  <div id="myBoard"></div>
+
+  <div class="input-container">
+    <input type="text" id="moveInput" placeholder="Type move (e.g. e4, Nf3)..." autofocus>
+    <button id="submitBtn">Move</button>
+  </div>
+
+  <div id="pgn-output"></div>
+  <br>
+  <button id="resetBtn" style="padding: 8px 16px; cursor: pointer;">Reset Game</button>
+
+  <script src="../lib/jquery-3.7.1.min.js"></script>
+  <script src="../lib/chess-0.12.1.min.js"></script>
+  <script src="../lib/chessboard-1.0.0.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

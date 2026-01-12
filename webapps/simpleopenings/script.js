@@ -9,7 +9,7 @@ let openings = {}; // This will hold the JSON data or the fallback data
 var config = {
     position: 'start',
     draggable: false, 
-    pieceTheme: 'img/chesspieces/wikipedia/{piece}.png' 
+    pieceTheme: '../img/chesspieces/wikipedia/{piece}.png' 
 }
 board = Chessboard('myBoard', config);
 
@@ -24,7 +24,7 @@ async function initBoard() {
     let dataLoaded = false;
     
     try {
-        const response = await fetch('openings.json');
+        const response = await fetch('https://0fajarpurnama0.github.io/assets/json/chessopenings.json');
         // Check if the response is OK (HTTP status 200)
         if (response.ok) {
             openings = await response.json();

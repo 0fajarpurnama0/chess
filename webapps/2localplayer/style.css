@@ -1,0 +1,56 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+h1 { margin-bottom: 10px; }
+
+/* Responsive Board Container */
+#myBoard {
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+/* Input Controls */
+.input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+#moveInput {
+    flex-grow: 1;
+    padding: 12px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+#submitBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Status & History */
+#status { font-weight: bold; margin-bottom: 10px; color: #333; }
+#pgn-output { 
+    background: #fff; 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    width: 90%; 
+    max-width: 500px; 
+    min-height: 50px;
+    font-family: monospace;
+    font-size: 14px;
+}

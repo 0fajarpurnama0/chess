@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P2P Notation Battle</title>
+  <link rel="stylesheet" href="../lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../lib/peerjs-1.5.5.js"></script>
+</head>
+<body>
+
+  <div id="connection-panel">
+    <div>My ID: <span id="myId">Generating...</span></div>
+    <div style="margin-top: 10px; display: flex; gap: 5px; justify-content: center;">
+      <input type="text" id="connId" placeholder="Enter Friend's ID" style="padding: 5px;">
+      <button id="connectBtn">Connect</button>
+    </div>
+    <div id="connStatus" style="margin-top: 5px; font-size: 0.9em; color: #666;">Status: Waiting for peer...</div>
+  </div>
+
+  <div id="status">White to move</div>
+  <div id="myBoard"></div>
+
+  <div class="input-container">
+    <input type="text" id="moveInput" placeholder="Type move (e.g. e4)..." autofocus>
+    <button id="submitBtn">Move</button>
+  </div>
+
+  <div class="navigation-controls">
+    <button id="prevBtn" class="nav-btn">⬅️ Back</button>
+    <button id="resetBtn" class="nav-btn">↩️ Reset</button>
+    <button id="nextBtn" class="nav-btn">Forward ➡️</button>
+  </div>
+
+  <div id="pgn-output"></div>
+
+  <script src="../lib/jquery-3.7.1.min.js"></script>
+  <script src="../lib/chess-0.12.1.min.js"></script>
+  <script src="../lib/chessboard-1.0.0.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

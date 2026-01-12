@@ -1,0 +1,79 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+}
+
+/* Connection Panel */
+#connection-panel {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+#myId { font-weight: bold; color: #2196F3; font-family: monospace; font-size: 1.2em; }
+
+/* Responsive Board */
+#myBoard {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto 20px auto;
+}
+
+/* Input Controls */
+.input-container {
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    max-width: 500px;
+    margin-bottom: 10px;
+}
+
+#moveInput {
+    flex-grow: 1;
+    padding: 12px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: white;
+    transition: background 0.2s;
+}
+
+#submitBtn { background-color: #4CAF50; }
+#submitBtn:hover { background-color: #45a049; }
+
+#connectBtn { background-color: #2196F3; }
+
+.nav-btn { background-color: #555; flex: 1; }
+.nav-btn:hover { background-color: #333; }
+
+/* Navigation Row */
+.navigation-controls {
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    max-width: 500px;
+    margin-top: 10px;
+}
+
+#status { font-weight: bold; margin-bottom: 10px; color: #333; }
+#pgn-output { 
+    background: #fff; padding: 15px; border: 1px solid #ddd; 
+    width: 90%; max-width: 500px; min-height: 40px; 
+    font-family: monospace; margin-top: 10px; font-size: 0.9em;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chess Tree Study</title>
+  <link rel="stylesheet" href="../lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>♟️ Opening Tree Explorer</h1>
+
+  <div id="main-container">
+    <div id="myBoard"></div>
+
+    <div id="sidebar">
+      <div id="history">Start</div>
+      
+      <div id="comment-box">Select a move to begin study.</div>
+
+      <h4>Available Moves:</h4>
+      <div id="move-options">Loading...</div>
+
+      <div id="controls">
+        <button id="resetBtn">↩️ Reset to Start</button>
+        <button id="undoBtn">⬅️ Undo Last</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../lib/jquery-3.7.1.min.js"></script>
+  <script src="../lib/chess-0.12.1.min.js"></script>
+  <script src="../lib/chessboard-1.0.0.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
