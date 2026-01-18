@@ -1,0 +1,48 @@
+/* Simple layout styling */
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+/* Before (Original CSS - had fixed width): */
+/* #myBoard {
+    width: 400px;
+    margin: 20px;
+} */
+
+/* After (The Fix - Use responsive width): */
+#myBoard {
+    width: 90%; /* Scale to 90% of the screen/parent width */
+    max-width: 500px; /* Optional: set a reasonable maximum size for large screens */
+    margin: 20px auto; /* Center the board horizontally */
+}
+.controls {
+  margin-bottom: 20px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+select {
+  padding: 10px;
+  font-size: 16px;
+}
+#notationDisplay {
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 400px; /* Match board width */
+  background-color: #fff;
+  font-size: 14px;
+}
+
+#pgn-output .highlight {
+  font-weight: bold;
+  background-color: #ffeb3b; /* Highlight color */
+  padding: 2px 4px;
+  border-radius: 3px;
+}
