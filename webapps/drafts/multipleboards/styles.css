@@ -1,0 +1,28 @@
+.lesson-block {
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: sans-serif;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.board-container {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.controls button {
+    padding: 5px 15px;
+    cursor: pointer;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.controls button:hover { background-color: #eee; }
+.lesson-text h3 { margin-top: 0; }

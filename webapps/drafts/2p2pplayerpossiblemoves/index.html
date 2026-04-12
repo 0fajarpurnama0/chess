@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Multiplayer - Type & Play</title>
+  <link rel="stylesheet" href="../../lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="connection-panel" class="wrapper-box">
+    <h1>🌐 Connect to Game</h1>
+    
+    <div class="info-box">
+      <p style="font-weight: bold; margin-bottom: 5px;">Share Invite Link:</p>
+      <input type="text" id="invite-link-input" readonly style="width: 100%; padding: 8px; margin-bottom: 10px; font-family: monospace; background-color: #eef5fa; border: 1px solid #bcdcfa; border-radius: 4px;">
+      <button id="copyLinkBtn" class="action-button" style="width: 100%; margin-bottom: 15px;">Copy Link</button>
+      
+      <hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 15px 0;">
+      
+      <p style="font-weight: bold; margin-bottom: 5px;">Or Share Raw ID:</p>
+      <h2 id="my-id" class="highlight-id">Loading...</h2>
+      <button id="copyIdBtn" class="copy-btn">Copy ID</button>
+    </div>
+    
+    <div class="info-box" style="margin-top: 20px;">
+      <p style="font-weight: bold; margin-bottom: 5px;">Join a Friend's Game:</p>
+      <input type="text" id="opponent-id-input" placeholder="Paste link or ID here..." style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-family: monospace;">
+      <button id="connectBtn" class="action-button" style="margin-top: 10px; width: 100%;">Connect & Play</button>
+    </div>
+    <p id="connection-status" class="status-text"></p>
+  </div>
+
+  <div id="game-wrapper" class="wrapper-box" style="display: none;">
+    <h1>♟️ Type & Play</h1>
+    <div id="status" class="status-banner">Waiting for connection...</div>
+
+    <div id="myBoard" class="board-container"></div>
+
+    <div class="input-container">
+      <input type="text" id="moveInput" placeholder="Type move (e.g. e4, Nf3)..." autocomplete="off" disabled>
+      <button id="submitBtn" disabled>Move</button>
+    </div>
+
+    <div id="cheat-sheet"></div>
+
+    <div class="output-container">
+      <p class="output-label">Portable Game Notation (PGN)</p>
+      <div class="output-box-wrapper">
+        <div id="pgn-output" class="output-box"></div>
+        <button id="copyPgnBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+
+    <div class="output-container">
+      <p class="output-label">Forsyth-Edwards Notation (FEN)</p>
+      <div class="output-box-wrapper">
+        <div id="fen-output" class="output-box"></div>
+        <button id="copyFenBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+    
+    <div id="host-controls" class="fen-control-panel">
+      <p class="output-label">Host Controls</p>
+      <input type="text" id="fenInput" placeholder="Paste FEN string here to load position..." autocomplete="off">
+      <div class="fen-buttons">
+        <button id="loadBtn" class="action-button">Load FEN</button>
+        <button id="flipBtn" class="action-button secondary-btn">Flip Board</button>
+        <button id="resetBtn" class="reset-button">Reset</button>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <p class="output-label">Live Chat</p>
+      <div id="chat-box" class="chat-box"></div>
+      <div class="chat-input-wrapper">
+        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button id="sendChatBtn" class="action-button">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../../lib/jquery-3.7.1.min.js"></script>
+  <script src="../../lib/chess-0.12.1.min.js"></script>
+  <script src="../../lib/chessboard-1.0.0.min.js"></script>
+  <script src="../../lib/peerjs-1.5.5.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

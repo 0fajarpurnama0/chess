@@ -1,0 +1,21 @@
+{
+  "name": "Type & Play Chess",
+  "short_name": "Chess P2P",
+  "description": "A local and P2P multiplayer chess web app.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f4f9",
+  "theme_color": "#2c3e50",
+  "icons": [
+    {
+      "src": "img/chesspieces/wikipedia/bN.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/chesspieces/wikipedia/bN.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

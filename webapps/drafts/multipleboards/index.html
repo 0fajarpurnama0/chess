@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Boards</title>
+    <link rel="stylesheet" href="../../lib/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="boardx" data-pgn="1. e4 e5 2. Nf3 Nc6 3. Bb5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Ruy Lopez</h3>
+            <p>Starts from the normal position.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="boardy" 
+             data-start-fen="8/8/8/8/8/4k3/4P3/4K3 w - - 0 1" 
+             data-pgn="1. Kf1 Kd2 2. Kf2"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Pawn Endgame</h3>
+            <p>This board starts from a custom FEN. Click next to see the winning sequence.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board1" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Develop Quickly & Purposefully</h3>
+            <p>Knights before Bishops. Bishops like open diagonals; Knights like closed, complex positions. Notice how White smoothly develops minor pieces with purpose before moving any pawns unnecessarily.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board2" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. d4 Nf6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Don't Move the Same Piece Twice</h3>
+            <p>Every tempo matters. Develop with a threat if possible. In this Scandinavian Defense, Black moves the Queen twice, allowing White to develop the Knight (Nc3) with a free tempo.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board3" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. d4 d5 2. c4 Nf6 3. cxd5 Nxd5 4. e4 Nf6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Center Supremacy</h3>
+            <p>Control the center and capture <b>toward</b> the center with your pawns to build a strong mass. Notice how Black's 4...exd5 pawn capture replaces a wing pawn (e6) with a central pawn (d5).</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board4" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. O-O Nf6 5. d3 O-O"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>King Safety First</h3>
+            <p>Castle before move 10. Avoid moving the pawns immediately in front of your castled King, as this creates permanent weaknesses that can never be undone.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board5" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 e5 2. Qh5 Nc6 3. Bc4 g6 4. Qf3 Nf6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Patience with the Queen</h3>
+            <p>No Queen too early. Bringing her out too fast just allows your opponent to develop their minor pieces while attacking her, forcing you to waste moves retreating.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board6" 
+            data-start-fen="r1bq1rk1/pp3ppp/2n5/3p3P/8/2PB4/PPPQ4/2KR3R b - - 0 1" 
+            data-pgn="1... g5 2. hxg6 fxg6 3. Qh6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>En Passant as a Battering Ram</h3>
+            <p>Amateurs view <i>en passant</i> as a trick; masters use it to destroy defenses. Watch Black play <b>...g5</b>, attempting to keep the Kingside closed and their King safe. White ruthlessly punishes this with <b>hxg6 e.p.</b>, kicking the door down, ripping open the h-file for the Rook, and initiating a brutal mating attack.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board7" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 cxd4 5. cxd4 Nc6 6. Nf3"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Target Weaknesses (Isolated Pawns)</h3>
+            <p>Isolated pawns (pawns with no friendly neighbors) are massive liabilities. Notice White's d4 pawn. It cannot be defended by another pawn, meaning pieces must be tied down to defend it.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board8" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be2 e5 7. Nb3 Be7 8. O-O O-O 9. a4 Be6 10. Nd5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Blockade Backward Pawns</h3>
+            <p>A backward pawn cannot step forward safely. Look at Black's d6 pawn. By jumping the Knight to d5, White perfectly blockades the pawn, ensuring it can never advance.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board9" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. f3 e5 2. g4 Qh4#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Be Careful When Pushing Pawns</h3>
+            <p>Pawns cannot move backward. Every time a pawn moves, it permanently leaves squares behind it weak. Pushing the f and g pawns carelessly results in an instant catastrophe.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board10" 
+            data-start-fen="8/8/4k3/1p1p1p2/pP1P1P2/P3P3/4K3/4B3 w - - 0 1" 
+            data-pgn="1. Bh4 Kd6 2. Bg5 Ke6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Color Complexes</h3>
+            <p>Put your pawns on the <b>opposite</b> color of your remaining Bishop so they don't block its diagonals. Notice how White's pawns are on dark squares, allowing the light-squared Bishop total freedom.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board11" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 Be7 6. e3 O-O 7. Bd3 c6 8. Qc2 Nbd7 9. Nf3 Re8 10. O-O Nf8 11. b4"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Minority Attack</h3>
+            <p>Advancing a smaller group of pawns against a larger group. Watch White play 11. b4, beginning a Queenside pawn storm with just two pawns (a and b) against Black's three (a, b, c) to create a weakness.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board12" 
+            data-start-fen="r2q1rk1/pp1b1ppp/2n1p3/2ppP3/3P4/2PB1N2/P1P2PPP/R2Q1RK1 b - - 0 1" 
+            data-pgn="1... c4 2. Be2 b5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Bad Bishop</h3>
+            <p>A "bad" Bishop is blocked by its own pawns. Look at Black's light-squared Bishop on d7. It is completely trapped behind its own e6 and d5 pawns. It is essentially a tall pawn. NEVER trade a good Knight for a piece this restricted!</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board13" 
+            data-start-fen="r1b2rk1/ppqn1pbp/3pp1p1/2p5/2P1P3/2N1B2P/PP1QBPP1/R4RK1 b - - 0 1" 
+            data-pgn="1... e5 2. Nd5 Qd8 3. Bg5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Outpost (Color Complex Weakness)</h3>
+            <p>An outpost is only truly permanent when enemy pawns can no longer control the square. Watch Black play <b>...e5</b>. This is a massive positional blunder. It permanently weakens the light squares, specifically the <b>d5</b> square, while simultaneously blocking their own light-squared Bishop. White immediately punishes this with <b>Nd5</b>, establishing an unkickable "octopus" Knight that dominates the board forever.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board14a" 
+            data-start-fen="r4rk1/ppp1bppp/2np1n2/8/8/2NP1N2/PPP2PPP/R1B2RK1 w - - 0 1" 
+            data-pgn="1. Re1 Rfe8 2. Rae1"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Seizing Open Files</h3>
+            <p>Rooks are long-range artillery that are completely useless if blocked by their own pawns. An "open file" is a column with no pawns on it. Watch White immediately slide the Rook to <b>Re1</b> to take control of the e-file, and then double up with <b>Rae1</b>. Whoever controls the open files controls the highways into the enemy camp.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board14b" 
+            data-start-fen="r1bq1rk1/ppp1bppp/2np1n2/4p3/4P3/2NP1N2/PPP1BPPP/R1BQ1RK1 w - - 0 8" 
+            data-pgn="1. Be3 a6 2. Qd2"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Connecting the Rooks</h3>
+            <p>A major milestone out of the opening is "connecting" your Rooks. This means clearing the back rank of your minor pieces and your Queen so your Rooks defend each other. After White plays <b>Qd2</b>, the Rooks on a1 and f1 are connected. They are now highly resilient to tactics and ready to deploy as a coordinated team.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board14c" 
+            data-start-fen="r4rk1/ppp2ppp/8/8/8/8/PPP2PPP/3RR1K1 b - - 0 1" 
+            data-pgn="1... a6 2. Rd7 Rac8 3. Ree7"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Absolute Dominance (Pigs on the 7th)</h3>
+            <p>Two Rooks on the 7th rank are called "Blind Swine" because they greedily gobble up everything in their path. Watch the sequence: Black makes a terrible positional mistake by playing the useless <b>...a6</b> instead of contesting the open d or e files. White immediately punishes this by invading with <b>Rd7</b>, attacking c7. When Black desperately tries to defend with <b>...Rac8</b>, White casually slides the second Rook up with <b>Ree7</b>. The Black King is trapped, the pawns will fall, and the game is effectively over.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board15" 
+            data-start-fen="6k1/p4p1p/1p4p1/8/4N3/4B3/P1r2PPP/6K1 b - - 0 1" 
+            data-pgn="1... Rxa2 2. Nf6+ Kg7 3. Bd4 Rd2 4. Ne4+"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Material Imbalances (Minor Pieces vs Rook)</h3>
+            <p>Two minor pieces are generally superior to a Rook and a pawn because of their agility. Watch Black greedily play <b>...Rxa2</b>, securing the material advantage. White calmly centralizes with <b>Nf6+</b> and <b>Bd4</b>, creating a deadly battery. When Black tries to attack the Bishop with <b>...Rd2</b>, White springs the trap: <b>Ne4+</b> unleashes a discovered check while simultaneously forking and winning the clumsy Rook!</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board16" 
+            data-start-fen="r1bqk2r/ppp2ppp/2np1n2/2b1p3/2BPP3/5N2/PPP2PPP/RNBQR1K1 b kq - 0 1" 
+            data-pgn="1... exd4 2. e5! dxe5 3. Nxe5 Nxe5 4. Rxe5+"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Exploit the Uncastled King</h3>
+            <p>If the opponent delays castling, ruthlessly blow open the center files to reach their King. Watch Black greedily play <b>...exd4</b>. Instead of recapturing, White plays the explosive <b>e5!</b>, sacrificing a second pawn to clear the e-file. After the pieces trade, White unleashes <b>Rxe5+</b>. The uncastled King is caught in the crossfire, and the Rook simultaneously forks and wins the Bishop on c5.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board17" 
+            data-start-fen="r1rq2k1/pp1bppbp/3p1np1/8/3NP3/1BN1BP2/PPPQ2PP/2KR3R w - - 5 13" 
+            data-pgn="1. h4 h5 2. g4 hxg4 3. h5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Opposite-Side Castling (Pawn Storm)</h3>
+            <p>The Yugoslav Attack! White has castled Queenside; Black Kingside. White launches a devastating pawn storm, perfectly willing to sacrifice pawns (g4, h5) just to tear open the h-file for the Rooks.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board18" 
+            data-start-fen="r1bq1rk1/ppp2p1p/2np1n2/2b1p1N1/2B1P3/2N3Q1/PPPP1PPP/R1B2RK1 w - - 0 8" 
+            data-pgn="1. Ne6+ Kh8 2. Qg7#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Rule of +2 (Overwhelming Force)</h3>
+            <p>Bring at least two more attackers than they have defenders. White doesn't just attack the King with one piece. The Knight, Bishop, and Queen all converge on the Kingside, completely overwhelming the lone defensive pawn structure.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board19" 
+            data-start-fen="8/2r2pkp/2r3p1/8/8/2R3P1/2R2P1P/2Q3K1 w - - 0 1" 
+            data-pgn="1. Rxc6 Rxc6 2. Rxc6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Create Batteries</h3>
+            <p>Line up your heavy pieces to smash through defenders. This famous setup (Alekhine's Gun) features two Rooks backed up by a Queen on the same file. It operates like a battering ram that no single defender can withstand.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board20" 
+            data-start-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" 
+            data-pgn="1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. h4?! c5! 6. e5?! dxe5 7. dxe5 Qxd1+ 8. Kxd1 Ng4!"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Flank Defense (Central Strike)</h3>
+            <p>The golden rule of chess: <b>meet a flank attack with a central counter-strike</b>. After Black sets up the King's Indian Defense, White launches a premature flank attack with <b>5. h4</b>, completely ignoring development. Black immediately strikes the center with <b>...c5!</b> White panics and pushes <b>e5</b>, but the center collapses. After the Queen trade, Black's Knight jumps to <b>Ng4</b>, simultaneously attacking the e5 pawn and threatening a devastating fork on f2. White's flank attack was useless, and their game is ruined.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board21" 
+            data-start-fen="r1bqkb1r/pppp1ppp/2n2n2/4p1N1/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 5 4" 
+            data-pgn="1... d5 2. exd5 Nxd5?! 3. Nxf7!"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Geometry Tactics (The Fork)</h3>
+            <p>A true fork attacks two high-value targets simultaneously, forcing the opponent to abandon one. This is the famous Fried Liver Attack. Black tries to defend the center with <b>...Nxd5</b>, but walks into a brutal family fork. White plays the devastating <b>Nxf7!</b>, simultaneously attacking Black's Queen and Rook. Black is mathematically forced to lose heavy material.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board22" 
+            data-start-fen="r4rk1/p1qn1ppp/1pp1p3/4P3/3P4/1QN3P1/P4P1P/R1B2RK1 b - - 0 13" 
+            data-pgn="1... Rab8?? 2. Bf4! Qc8 3. Bxb8"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Geometry Tactics (The Skewer)</h3>
+            <p>A skewer is the inverse of a pin. The <i>more</i> valuable piece is in front. Watch Black mistakenly play <b>...Rab8??</b>. White immediately punishes this with <b>Bf4!</b>. The Bishop attacks the Queen on c7, and because the Rook is trapped behind it on the exact same diagonal, the Queen must flee to safety, leaving the Rook to be captured.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board23" 
+            data-start-fen="rnbqkb1r/pppp1ppp/5n2/4N3/4n3/8/PPPPQPPP/RNB1KB1R b KQkq - 1 4" 
+            data-pgn="1... Nf6?? 2. Nc6+! Be7 3. Nxd8"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Force & Shock (Discovered Attack)</h3>
+            <p>Moving a piece to unleash a hidden attack from the piece behind it. In this classic opening trap, Black tries to retreat their Knight to safety with <b>...Nf6??</b>, but walks right into disaster. White plays <b>Nc6+!</b>. This unleashes a deadly discovered check from the White Queen, while the Knight simultaneously attacks Black's Queen. The game is instantly over.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board24" 
+            data-start-fen="r1b2rk1/ppp2Npp/2n2q2/8/8/1Q6/PPP2PPP/R4RK1 w - - 0 14" 
+            data-pgn="1. Nh6+ Kh8 2. Qg8+ Rxg8 3. Nf7#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Manipulation (Decoy & Smothering)</h3>
+            <p>Smothered mate occurs when a King is trapped by its own pieces. Watch the legendary "Philidor's Legacy" sequence. White unleashes a devastating double-check with <b>Nh6+</b>, forcing the Black King to the corner. White then plays the brilliant decoy sacrifice <b>Qg8+!</b>, forcing the Black Rook to capture and permanently trap its own King, allowing <b>Nf7#</b>.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board25" 
+            data-start-fen="6k1/p4p1p/1p4p1/8/QP3P2/2P3P1/P6P/3R2K1 b - - 0 25" 
+            data-pgn="1... Qe3+ 2. Kg2 Qe2+ 3. Kh3 Qh5+ 4. Kg2 Qe2+"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Desperation (Perpetual Check)</h3>
+            <p>When you are completely losing, your only goal is survival. Look at this position: Black is down an entire Rook. The game seems hopelessly lost. But Black plays <b>Qe3+!</b>. White's King is forced to dance endlessly between g2, h3, and f1 while the Black Queen continuously checks on e2, h5, and f3. White can never escape the loop, and Black forces a miraculous draw.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board26" 
+            data-start-fen="6k1/p4ppp/1p6/8/2q5/P4P2/1P1Q2PP/6K1 w - - 0 1" 
+            data-pgn="1. Qc3 Qxc3 2. bxc3 Kf8"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Simplification (Trade to Safety)</h3>
+            <p>When you are ahead in material or trying to survive a scary attack, trade the heavy pieces. By forcing a Queen trade here (Qc3), White instantly removes all checkmate threats and transitions into a winning pawn endgame.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board27" 
+            data-start-fen="4k3/8/4n3/8/8/8/8/4R1K1 b - - 0 1" 
+            data-pgn="1... Kd7 2. Kf2 Kd6"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Breaking a Pin</h3>
+            <p>Black's Knight is absolutely pinned to the King. If the King stays on the e-file, White will eventually march pawns or the King up to capture it. Black simply steps off the e-file (Kd7), breaking the pin and freeing the Knight.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board28" 
+            data-start-fen="7k/p4p1p/8/8/8/8/1R4pP/6K1 w - - 0 1" 
+            data-pgn="1. Rb7 Kg7 2. Rxa7"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Use Opponent's Pawn as a Shield</h3>
+            <p>Look at Black's pawn on g2. It looks dangerous, but it is actually shielding the White King! Black's heavy pieces cannot check the White King on the g-file because their own pawn is in the way. Do not capture a shield unless necessary!</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board29" 
+            data-start-fen="r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQ - 0 5" 
+            data-pgn="1... d6 2. Bg5 h6 3. Bh4 g5"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The Counter Threat</h3>
+            <p>The best defense is a good offense. When White pins the Knight (Bg5) threatening to ruin Black's structure, Black doesn't passively defend. Black immediately questions the Bishop with h6, forcing it to make a decision.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board30" 
+            data-start-fen="rnbqkbnr/pppp1ppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2" 
+            data-pgn="1... d5 2. exd5 Qxd5 3. Nc3 Qd8"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Consider ALL Threats (Don't Panic)</h3>
+            <p>In the Scandinavian, after White plays Nc3, Black's Queen is under attack. Amateurs panic and move it to a random square. The principled, calm defense is to simply retreat the Queen back to its safe starting square (Qd8) or Qa5.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board31" 
+            data-start-fen="4k3/8/8/8/8/8/4P3/4K3 w - - 0 1" 
+            data-pgn="1. Ke2 Ke7 2. Ke3 Ke6 3. Ke4"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>The King Awakens (Opposition)</h3>
+            <p>The endgame King is your strongest piece. Activate it immediately! Watch how White marches the King up to take "The Opposition" (Kings facing each other with an odd number of squares between them). White uses this to shoulder-block the Black King away from the center.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board32" 
+            data-start-fen="8/8/8/1P6/8/8/6k1/4K3 w - - 0 1" 
+            data-pgn="1. b6 Kf3 2. b7 Ke4 3. b8=Q"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Passed Pawns Must Be Pushed</h3>
+            <p>A passed pawn has no enemy pawns in front of it or on adjacent files to stop it. It is a ticking time bomb. If the enemy King is too far away, push it relentlessly to promotion. Do not overthink it.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board33" 
+            data-start-fen="8/P7/8/8/8/8/1r4k1/R3K3 w - - 0 1" 
+            data-pgn="1. a8=Q+"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Rook Placement (The Tarrasch Rule)</h3>
+            <p>Rooks belong <b>behind</b> passed pawns. White's Rook is perfectly placed behind its own passed pawn, supporting it all the way to promotion. Black's Rook is awkwardly placed in front, acting as a miserable roadblock for the pawn it's trying to stop.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board34" 
+            data-start-fen="8/8/8/8/4k3/4P3/5K2/8 b - - 0 1" 
+            data-pgn="1... Kd3 2. Kf3"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Zugzwang</h3>
+            <p>A German term meaning "compulsion to move." In chess, you cannot pass your turn. Here, Black's King is perfectly centralized, but it is Black's turn to move. Every legal move forces Black to abandon the blockade or step away, allowing White's King to infiltrate and win.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board35" 
+            data-start-fen="8/p7/4k3/1p6/8/8/1P6/4K3 w - - 0 1" 
+            data-pgn="1. b4 Kd5 2. Kd2 Kc4"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Watch the Clock & Board (Minority vs Majority)</h3>
+            <p>In pawn endgames, fixing your opponent's pawns on the same color as your bishop, or forcing pawn weaknesses is key. Here White prematurely pushes b4, allowing the Black King to easily march over and gobble up the isolated pawn.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board36" 
+            data-start-fen="6k1/5ppp/8/8/8/8/8/1R4K1 w - - 0 1" 
+            data-pgn="1. Rb8#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Back Rank Mate</h3>
+            <p>The absolute classic. The King is trapped behind its own three pawn shield, and a Rook or Queen drops down to the back rank to deliver a brutal, undefendable mate.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board37" 
+            data-start-fen="6rk/6pp/8/6N1/8/8/8/7K w - - 0 1" 
+            data-pgn="1. Nf7#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Smothered Mate</h3>
+            <p>A beautiful mate delivered solely by a Knight. The enemy King is completely surrounded (smothered) by its own pieces, meaning it cannot step out of the Knight's checking path.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board38" 
+            data-start-fen="7k/7p/5N2/8/8/8/8/R5K1 w - - 0 1" 
+            data-pgn="1. Ra8+ Kg7 2. Rg8#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Arabian Mate</h3>
+            <p>The Knight and Rook work together in perfect harmony in the corner of the board. The Knight protects the Rook and cuts off the King's escape square, while the Rook delivers the fatal blow.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board39" 
+            data-start-fen="r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 4" 
+            data-pgn="1. Qxf7#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Scholar's Mate</h3>
+            <p>The infamous 4-move checkmate. The Queen and Bishop team up to target the f7 square (f2 for Black). This pawn is only defended by the King in the opening, making it the weakest point on the board.</p>
+        </div>
+    </div>
+
+    <div class="lesson-block">
+        <div class="board-container edu-board" id="board40" 
+            data-start-fen="2kr4/pp1p1ppp/2p5/8/5B2/3B4/P4PPP/6K1 w - - 0 1" 
+            data-pgn="1. Ba6#"></div>
+        <div class="controls">
+            <button class="prev-btn">Prev</button>
+            <button class="next-btn">Next</button>
+            <button class="reset-btn">Reset</button>
+        </div>
+        <div class="lesson-text">
+            <h3>Boden's Mate</h3>
+            <p>A devastating checkmate delivered by two Bishops on criss-crossing diagonals. It usually happens when the King is castled Queenside and its own pawns or pieces block its escape.</p>
+        </div>
+    </div>
+
+    <script src="../../lib/jquery-3.7.1.min.js"></script>
+    <script src="../../lib/chess-0.12.1.min.js"></script>
+    <script src="../../lib/chessboard-1.0.0.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

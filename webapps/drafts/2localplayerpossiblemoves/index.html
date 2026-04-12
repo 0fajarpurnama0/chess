@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2 Player Local - Type & Play</title>
+  <link rel="stylesheet" href="../../lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="game-wrapper">
+    <h1>♟️ Type & Play</h1>
+    <div id="status" class="status-banner">White to move</div>
+
+    <div id="myBoard" class="board-container"></div>
+
+    <div class="input-container">
+      <input type="text" id="moveInput" placeholder="Type move (e.g. e4, Nf3)..." autofocus autocomplete="off">
+      <button id="submitBtn">Move</button>
+    </div>
+
+    <div id="cheat-sheet"></div>
+
+    <div class="output-container">
+      <p class="output-label">Portable Game Notation (PGN)</p>
+      <div class="output-box-wrapper">
+        <div id="pgn-output" class="output-box"></div>
+        <button id="copyPgnBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+
+    <div class="output-container">
+      <p class="output-label">Forsyth-Edwards Notation (FEN)</p>
+      <div class="output-box-wrapper">
+        <div id="fen-output" class="output-box"></div>
+        <button id="copyFenBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+    
+    <div class="fen-control-panel">
+      <input type="text" id="fenInput" placeholder="Paste FEN string here to load position..." autocomplete="off">
+      <div class="fen-buttons">
+        <button id="loadBtn" class="action-button">Load FEN</button>
+        <button id="flipBtn" class="action-button secondary-btn">Flip Board</button>
+        <button id="resetBtn" class="reset-button">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../lib/jquery-3.7.1.min.js"></script>
+  <script src="../../lib/chess-0.12.1.min.js"></script>
+  <script src="../../lib/chessboard-1.0.0.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

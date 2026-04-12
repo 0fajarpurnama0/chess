@@ -9,7 +9,7 @@ var config = {
     position: 'start',
     draggable: false, 
     // Use local images if you have them, otherwise use the raw GitHub link
-    pieceTheme: '../img/chesspieces/wikipedia/{piece}.png' 
+    pieceTheme: '../../img/chesspieces/wikipedia/{piece}.png' 
 };
 board = Chessboard('myBoard', config);
 

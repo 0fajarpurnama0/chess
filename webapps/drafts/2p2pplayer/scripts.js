@@ -11,7 +11,7 @@ var myColor = 'w'; // Default to White (Host)
 var config = {
     position: 'start',
     draggable: false, // Input Trainer Mode
-    pieceTheme: '../img/chesspieces/wikipedia/{piece}.png'
+    pieceTheme: '../../img/chesspieces/wikipedia/{piece}.png'
 };
 board = Chessboard('myBoard', config);
 window.addEventListener('resize', board.resize);

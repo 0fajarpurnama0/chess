@@ -6,7 +6,7 @@ var game = new Chess();
 var config = {
     position: 'start',
     draggable: false, // Strictly no dragging!
-    pieceTheme: '../img/chesspieces/wikipedia/{piece}.png'
+    pieceTheme: '../../img/chesspieces/wikipedia/{piece}.png'
 };
 
 // Initialize Board

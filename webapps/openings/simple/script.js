@@ -9,7 +9,7 @@ let openings = {}; // This will hold the JSON data or the fallback data
 var config = {
     position: 'start',
     draggable: false, 
-    pieceTheme: '../img/chesspieces/wikipedia/{piece}.png' 
+    pieceTheme: '../../img/chesspieces/wikipedia/{piece}.png' 
 }
 board = Chessboard('myBoard', config);
 
@@ -20,34 +20,61 @@ const customContainer = document.getElementById('customInputContainer');
 const pgnInput = document.getElementById('pgnInput');
 
 // Load Data (with Fallback Logic)
+// Global lookup object
+let flatOpenings = {}; 
+
 async function initBoard() {
+    let rawData = null;
     let dataLoaded = false;
     
     try {
-        const response = await fetch('https://0fajarpurnama0.github.io/assets/json/chessopenings.json');
-        // Check if the response is OK (HTTP status 200)
+        const response = await fetch('https://0fajarpurnama0.github.io/assets/json/chessopenings-simple.json');
         if (response.ok) {
-            openings = await response.json();
+            rawData = await response.json();
             dataLoaded = true;
-            console.log("Openings loaded successfully from openings.json.");
-        } else {
-            throw new Error(`Failed to fetch JSON with status: ${response.status}`);
         }
     } catch (error) {
-        // If fetching or parsing fails, use the local fallback data
-        console.warn("Could not load openings.json. Using local fallback data.", error);
-        openings = local_openings; // from chessopenings.js
+        console.warn("Using local fallback data.");
+        rawData = local_openings; // This now refers to your new 3-level object
         dataLoaded = true;
     }
 
-    // Only proceed if we have successfully loaded data (from JSON or fallback)
     if (dataLoaded) {
-        // Populate Dropdown
-        for (const name in openings) {
-            const option = document.createElement('option');
-            option.value = name;
-            option.innerText = name;
-            selector.appendChild(option);
+        // Reset Dropdown
+        selector.innerHTML = '<option value="" disabled selected>Select an Opening</option><option value="custom">-- Custom PGN --</option>';
+        
+        // Reset Lookup Map
+        flatOpenings = {};
+
+        // --- LOOP LEVEL 1: Major / Minor / Irregular ---
+        for (const topCategory in rawData) {
+            const subCategories = rawData[topCategory];
+
+            // --- LOOP LEVEL 2: King's Pawn / English / etc. ---
+            for (const groupName in subCategories) {
+                
+                // Create <optgroup>
+                const group = document.createElement('optgroup');
+                // Combine names to show full hierarchy, e.g., "Major Openings - King's Pawn"
+                group.label = `${topCategory} - ${groupName}`;
+
+                const specificOpenings = subCategories[groupName];
+
+                // --- LOOP LEVEL 3: The actual openings ---
+                for (const openingName in specificOpenings) {
+                    
+                    const option = document.createElement('option');
+                    option.value = openingName; // Unique ID
+                    option.innerText = openingName; // Display Text
+                    group.appendChild(option);
+
+                    // Flatten the move data into our lookup object
+                    flatOpenings[openingName] = specificOpenings[openingName];
+                }
+
+                // Add the populated group to the selector
+                selector.appendChild(group);
+            }
         }
     }
     
@@ -99,7 +126,6 @@ function speakNotation(move) {
 
 // --- 5. EVENT HANDLERS ---
 function attachEventListeners() {
-    
     // Dropdown Change
     selector.addEventListener('change', () => {
         const val = selector.value;
@@ -108,43 +134,39 @@ function attachEventListeners() {
             customContainer.style.display = "block";
         } else {
             customContainer.style.display = "none";
-            // Get moves from the globally loaded 'openings' object (either JSON or local)
-            currentOpeningMoves = openings[val].split(" ").filter(m => m.trim().length > 0);
-            game.reset();
-            currentMoveIndex = -1;
-            updateBoardAndNotation();
+            
+            // USE THE LOOKUP MAP (flatOpenings)
+            const movesStr = flatOpenings[val]; 
+            
+            if (movesStr) {
+                currentOpeningMoves = loadMovesFromPGN(movesStr);
+                game.reset();
+                currentMoveIndex = -1;
+                updateBoardAndNotation();
+            }
         }
     });
 
-    // "Load Moves" Button for Custom Input
+    // "Load Moves" Button
     document.getElementById('loadCustomBtn').addEventListener('click', () => {
         const text = pgnInput.value;
         if(!text.trim()) { alert("Please enter some moves first."); return; }
-
         const parsedMoves = loadMovesFromPGN(text);
-        
-        if (parsedMoves.length === 0) {
-            alert("Could not parse moves. Please check notation (e.g., 'e4 e5 Nf3').");
-        } else {
-            currentOpeningMoves = parsedMoves;
-            game.reset();
-            currentMoveIndex = -1;
-            updateBoardAndNotation();
-        }
+        currentOpeningMoves = parsedMoves;
+        game.reset();
+        currentMoveIndex = -1;
+        updateBoardAndNotation();
     });
 
-    // Forward Button
     document.getElementById('nextBtn').addEventListener('click', () => {
         if (currentMoveIndex < currentOpeningMoves.length - 1) {
             currentMoveIndex++;
-            const movePlayed = currentOpeningMoves[currentMoveIndex];
-            game.move(movePlayed);
-            speakNotation(movePlayed);
+            game.move(currentOpeningMoves[currentMoveIndex]);
+            speakNotation(currentOpeningMoves[currentMoveIndex]);
             updateBoardAndNotation();
         }
     });
 
-    // Back Button
     document.getElementById('prevBtn').addEventListener('click', () => {
         if (currentMoveIndex >= 0) {
             game.undo();
@@ -153,14 +175,12 @@ function attachEventListeners() {
         }
     });
 
-    // Reset Button
     document.getElementById('resetBtn').addEventListener('click', () => {
         game.reset();
         currentMoveIndex = -1;
         updateBoardAndNotation();
     });
 
-    // When the browser window is resized, tell the chessboard to redraw itself
     window.addEventListener('resize', board.resize);
 }
 

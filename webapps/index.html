@@ -1,21 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Chess Web Applications</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Multiplayer - Type & Play</title>
+  <link rel="stylesheet" href="lib/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div class="card-container">
-        <ul>
-            <li><a href="chessboard.html">Chess Board</a></li>
-            <li><a href="simpleopenings">Simple Openings</a></li>
-            <li><a href="allopenings">All Openings</a></li>
-            <li><a href="treeexplorer">Tree Explorer</a></li>
-            <li><a href="2localplayer">Play 2 Player Locally</a></li>
-            <li><a href="2p2pplayer">Play 2 Player Peer to Peer</a></li>
-        </ul>
+
+  <div id="game-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <h2 id="modal-title"></h2>
+        <div id="modal-body"></div>
+        <button id="modal-close" style="display: none;">Close</button>
     </div>
+  </div>
+
+  <div id="connection-panel" class="wrapper-box">
+      <h1>♟️ Chess Practice</h1>
+      <div class="info-box">
+          
+          <div style="display: flex; gap: 10px; margin-bottom: 20px; text-align: left;">
+              <div style="flex: 1;">
+                  <label style="font-size: 14px; font-weight: bold; color: #555;">Time Control:</label>
+                  <select id="timeControlSelect" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc;">
+                      <option value="none">Unlimited</option>
+                      <option value="180">3 Minutes</option>
+                      <option value="300">5 Minutes</option>
+                      <option value="600">10 Minutes</option>
+                  </select>
+              </div>
+              <div style="flex: 1;">
+                  <label style="font-size: 14px; font-weight: bold; color: #555;">Play As:</label>
+                  <select id="colorSelect" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc;">
+                      <option value="w">White</option>
+                      <option value="b">Black</option>
+                      <option value="r">Random</option>
+                  </select>
+              </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+              <button id="playComputerBtn" class="action-button" style="background-color: #3498db;">🤖 Play vs Computer</button>
+              <button id="localPlayBtn" class="action-button secondary-btn">🤝 Pass & Play (Local)</button>
+              
+              <hr style="width: 100%; border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+              
+              <p style="margin: 0 0 10px 0; font-size: 14px; color: #555; text-align: left;"><strong>Play with a friend online:</strong></p>
+              <button id="createLinkBtn" class="action-button" style="background-color: #9b59b6;">🔗 Share Invite Link</button>
+              
+              <div style="display: flex; gap: 5px; margin-top: 5px;">
+                  <input type="text" id="opponent-id-input" placeholder="Paste Friend's ID here..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                  <button id="connectBtn" class="action-button" style="background-color: #2c3e50; flex: 0.4; padding: 8px;">Connect</button>
+              </div>
+              <div class="highlight-id" style="margin-top: 10px; font-size: 12px;">Your ID: <span id="my-id">...</span></div>
+          </div>
+          
+          <div id="connection-status" class="status-text"></div>
+      </div>
+  </div>
+
+  <div id="game-wrapper" class="wrapper-box" style="display: none;">
+    <h1>♟️ Type & Play</h1>
+    
+    <div id="timer-display" style="display: none; justify-content: space-between; margin-bottom: 10px; font-family: monospace; font-size: 1.2em; font-weight: bold;">
+      <div id="timer-w" style="padding: 5px 15px; border-radius: 4px; border: 2px solid transparent;">White: <span>--:--</span></div>
+      <div id="timer-b" style="padding: 5px 15px; border-radius: 4px; border: 2px solid transparent;">Black: <span>--:--</span></div>
+    </div>
+    
+    <div id="status" class="status-banner">Waiting for connection...</div>
+
+    <div id="material-top" class="material-tracker"></div>
+    
+    <div id="engine-stats-container" style="display: none; background: #1e1e1e; color: #00ff00; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-family: monospace; font-size: 12px; border: 1px solid #333; width: 100%; box-sizing: border-box;">
+        <div style="margin-bottom: 5px;">
+            <strong style="color: #fff;">Lozza Diagnostics:</strong> 
+            Depth: <span id="engine-depth" style="color: #f1c40f;">0</span> | 
+            Nodes: <span id="engine-nodes" style="color: #e74c3c;">0</span> | 
+            Speed: <span id="engine-nps" style="color: #3498db;">0</span> NPS
+        </div>
+        <div style="color: #bdc3c7;">
+            <strong style="color: #fff;">Best Line (PV):</strong> <span id="engine-pv">...</span>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: stretch; margin-bottom: 20px; width: 100%;">
+      
+      <div id="eval-bar-container" style="display: none; width: 25px; flex-shrink: 0; background: #333; border-radius: 4px; overflow: hidden; position: relative;">
+          <div id="eval-bar-fill" style="width: 100%; height: 50%; background: #fff; transition: height 0.5s ease-out; position: absolute; bottom: 0;"></div>
+          <div id="eval-score-text" style="position: absolute; top: 50%; width: 100%; text-align: center; color: #7f8c8d; font-size: 11px; font-weight: bold; transform: translateY(-50%); z-index: 10; mix-blend-mode: difference;">0.0</div>
+      </div>
+      
+      <div id="myBoard" class="board-container" style="flex-grow: 1; margin-bottom: 0;"></div>
+      
+    </div>
+
+    <div id="material-bottom" class="material-tracker"></div>
+
+    <div class="input-container">
+      <input type="text" id="moveInput" placeholder="Type move (e.g. e4, Nf3)..." autocomplete="off" disabled>
+      <button id="submitBtn" disabled>Move</button>
+    </div>
+    
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
+      <button id="undoBtn" class="action-button secondary-btn" style="background-color: #e67e22;">⮪ Request Undo</button>
+    </div>
+
+    <div id="practice-controls" class="info-box" style="margin-top: 15px; display: none; text-align: center;">
+      
+      <div id="bot-selection-container" style="display: none; margin-bottom: 10px; justify-content: center; gap: 10px; align-items: center;">
+        <span style="font-weight: bold;">Opponent:</span>
+        <select id="engineTypeSelect" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
+          <option value="simple" selected>Simple Bot</option>
+          <option value="lib/lozza.js">Lozza Engine</option>
+        </select>
+      </div>
+
+      <div id="simple-bot-container" style="display: none; margin-bottom: 10px; justify-content: center; gap: 10px; align-items: center;">
+        <span style="font-weight: bold;">Bot Level:</span>
+        <select id="simpleBotSelect" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
+          <option value="random" selected>Level 0: Chaos</option>
+          <option value="caveman">Level 1: Caveman</option>
+          <option value="assassin">Level 2: Assassin</option>
+          <option value="scholar">Level 3: Scholar</option>
+          <option value="tactician">Level 4: Tactician</option>
+        </select>
+      </div>
+
+      <div id="lozza-strength-container" style="display: none; margin-bottom: 10px; justify-content: center; gap: 10px; align-items: center;">
+        <span style="font-weight: bold;">Lozza Strength:</span>
+        <select id="lozzaStrengthSelect" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
+          <option value="1" selected>Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+          <option value="5">Level 5</option>
+          <option value="6">Level 6</option>
+          <option value="7">Level 7</option>
+          <option value="8">Level 8</option>
+          <option value="9">Level 9</option>
+          <option value="beth">Beth</option>
+        </select>
+      </div>
+
+      <button id="toggleEvalBtn" class="action-button secondary-btn" style="background-color: #3498db; width: 100%;">📊 Request Eval Bar</button>
+    </div>
+
+    <div id="cheat-sheet"></div>
+
+    <div class="output-container">
+      <p class="output-label">Portable Game Notation (PGN)</p>
+      <div class="output-box-wrapper">
+        <div id="pgn-output" class="output-box"></div>
+        <button id="copyPgnBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+
+    <div class="output-container">
+      <p class="output-label">Forsyth-Edwards Notation (FEN)</p>
+      <div class="output-box-wrapper">
+        <div id="fen-output" class="output-box"></div>
+        <button id="copyFenBtn" class="copy-btn">Copy</button>
+      </div>
+    </div>
+    
+    <div id="host-controls" class="fen-control-panel">
+      <p class="output-label">Game Controls</p>
+      <input type="text" id="fenInput" placeholder="Paste FEN string here to load position..." autocomplete="off">
+      <div class="fen-buttons">
+        <button id="loadBtn" class="action-button">Load FEN</button>
+        <button id="flipBtn" class="action-button secondary-btn">Flip Board</button>
+        <button id="resetBtn" class="reset-button">Reset</button>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <p class="output-label">Live Chat</p>
+      <div id="chat-box" class="chat-box"></div>
+      <div class="chat-input-wrapper">
+        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button id="sendChatBtn" class="action-button">Send</button>
+      </div>
+    </div>
+
+  </div> 
+  
+  <footer style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f4f4f9; padding: 15px 0; border-top: 1px solid #e0e0e0; text-align: center; z-index: 100;">
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; font-size: 14px;">
+      <li><a href="openings" style="color: #7f8c8d; text-decoration: none; font-weight: bold; transition: color 0.2s;">Openings</a></li>
+      <li><a href="drafts" style="color: #7f8c8d; text-decoration: none; font-weight: bold; transition: color 0.2s;">Drafts</a></li>
+      <li><a href="gemini_chat_backup.md" style="color: #7f8c8d; text-decoration: none; font-weight: bold; transition: color 0.2s;">Gemini Chat Backup</a></li>
+    </ul>
+  </footer>
+
+  <script src="lib/jquery-3.7.1.min.js"></script>
+  <script src="lib/chess-0.12.1.min.js"></script>
+  <script src="lib/chessboard-1.0.0.min.js"></script>
+  <script src="lib/peerjs-1.5.5.js"></script>
+  
+  <script src="js/core.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/gui.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/engine/bots.js"></script>
+  <script src="js/engine/uci.js"></script>
+  <script src="js/engine/controller.js"></script>
+
 </body>
 </html>
