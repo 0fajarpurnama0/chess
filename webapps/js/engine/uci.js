@@ -64,7 +64,13 @@ window.ChessApp.UCI = {
                 const parts = line.split(' ');
                 const bestMove = parts[1]; 
                 
+                if (!window.ChessApp.Engine.isThinking) {
+                    return; 
+                }
+
                 window.ChessApp.Engine.isThinking = false; // Tell controller we are done
+                const moveStr = line.split(" ")[1];
+                // window.ChessApp.handleMove(moveStr, true);
                 
                 if (!bestMove || bestMove === '(none)') return;
                 

@@ -52,19 +52,18 @@ window.ChessApp.handleMove = function(moveText, isRemote = false) {
         
         window.ChessApp.sendNetworkData(payload);
     }
-    
+
     // --- C. Engine Hooks (Bots & Eval) ---
     // If playing vs Computer, and it is the computer's turn, trigger its response
     if (window.ChessApp.playMode === 'computer') {
         if (window.ChessApp.game.turn() !== window.ChessApp.myColor && !window.ChessApp.game.game_over()) {
-            // Add a tiny delay so the UI can draw the player's move before the bot locks the thread
             setTimeout(() => { window.ChessApp.Engine.askForMove(); }, 250);
         }
     }
 
-    // If Eval Bar is on (and we aren't already asking the bot for a move), ask for an evaluation
-    if (window.ChessApp.evalAllowed && window.ChessApp.playMode !== 'computer') {
-        window.ChessApp.Engine.askForMove();
+    // NEW: Always trigger background eval if allowed (works for P2P, Local, and Simple Bots!)
+    if (window.ChessApp.evalAllowed) {
+        setTimeout(() => { window.ChessApp.Engine.evaluateBoard(); }, 100);
     }
 
     return true; 
@@ -337,19 +336,10 @@ window.ChessApp.executeEvalEnable = function() {
     window.ChessApp.evalAllowed = true;
     document.getElementById('toggleEvalBtn').innerText = "📊 Hide Eval Bar";
     
-    // Reveal UI elements
     document.getElementById('eval-bar-container').style.display = 'block';
     document.getElementById('engine-stats-container').style.display = 'block';
     window.ChessApp.board.resize(); 
 
-    // Init engine if needed, then request a move
-    if (!window.ChessApp.Engine.worker) {
-        const enginePath = document.getElementById('engineSelect').value || 'lib/lozza.js';
-        window.ChessApp.Engine.init(enginePath);
-        setTimeout(() => {
-            window.ChessApp.Engine.askForMove();
-        }, 200);
-    } else {
-        window.ChessApp.Engine.askForMove();
-    }
+    // Kick off the background analysis instantly
+    window.ChessApp.Engine.evaluateBoard();
 };
