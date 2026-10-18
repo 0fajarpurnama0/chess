@@ -9,12 +9,23 @@ import chess.svg
 import cairosvg
 from PIL import Image, ImageDraw, ImageFont
 
-# Configuration
+# --- CONFIGURATION ---
 PGN_FILE = "game.pgn"
 OUTPUT_DIR = "output_frames"
 STOCKFISH_PATH = "/usr/games/stockfish"
+
+# Usernames to auto-detect for Black orientation
+MY_USERNAMES = ["0fajarpurnama0", "fajar purnama"]
+
+# Manual Flip Control:
+# - None  : Auto-detect (Flips to Black if your username matches [Black "..."])
+# - True  : Force flip (Black perspective)
+# - False : Force no flip (White perspective)
+FLIP_BOARD_OVERRIDE = None
+
 DEFAULT_MOVE_DURATION = 1.0  # Fallback duration if no timing metadata exists
 MIN_MOVE_DURATION = 0.2      # Minimum display time for pre-moves/instant moves
+
 
 def parse_time_control(tc_header: str) -> tuple[float | None, float]:
     """Parses TimeControl header (e.g., '300' or '900+10') into (base_seconds, increment)."""
@@ -36,6 +47,7 @@ def parse_time_control(tc_header: str) -> tuple[float | None, float]:
             
     return base, inc
 
+
 def parse_clock(comment: str) -> float | None:
     """Parses [%clk HH:MM:SS] or [%clk H:MM:SS.s] into total seconds."""
     match = re.search(r'\[%clk\s+(\d+):(\d+):(\d+(?:\.\d+)?)\]', comment)
@@ -44,6 +56,7 @@ def parse_clock(comment: str) -> float | None:
         return int(h) * 3600 + int(m) * 60 + float(s)
     return None
 
+
 def parse_timestamp(comment: str) -> float | None:
     """Parses [%timestamp X] (tenths of a second) into total seconds."""
     match = re.search(r'\[%timestamp\s+(\d+)\]', comment)
@@ -51,19 +64,18 @@ def parse_timestamp(comment: str) -> float | None:
         return int(match.group(1)) / 10.0
     return None
 
+
 def calculate_move_duration(node, turn: chess.Color, prev_clocks: dict, increment: float) -> float:
     """Calculates move duration using %timestamp, %clk delta, or fallback."""
     comment = node.comment or ""
     curr_clk = parse_clock(comment)
     ts = parse_timestamp(comment)
     
-    # Calculate clock difference if %clk is available
     prev_clk = prev_clocks[turn]
     clk_duration = None
     if curr_clk is not None:
         if prev_clk is not None:
             clk_duration = prev_clk - curr_clk + increment
-        # Update baseline clock for this player
         prev_clocks[turn] = curr_clk
 
     # Priority 1: %timestamp tag
@@ -77,8 +89,10 @@ def calculate_move_duration(node, turn: chess.Color, prev_clocks: dict, incremen
     # Priority 3: Default fallback
     return DEFAULT_MOVE_DURATION
 
+
 def cp_to_win_percent(cp: int) -> float:
     return 50 + 50 * (2 / (1 + math.exp(-0.003682 * cp)) - 1)
+
 
 def evaluate_position(board, engine) -> tuple[float, str]:
     info = engine.analyse(board, chess.engine.Limit(time=0.03))
@@ -95,6 +109,7 @@ def evaluate_position(board, engine) -> tuple[float, str]:
         text = f"+{val:.1f}" if val >= 0 else f"{val:.1f}"
         
     return win_pct, text
+
 
 def render_frame_with_bar(svg_data: str, win_pct: float, eval_text: str, output_path: str):
     board_png = cairosvg.svg2png(bytestring=svg_data.encode('utf-8'))
@@ -132,6 +147,23 @@ def render_frame_with_bar(svg_data: str, win_pct: float, eval_text: str, output_
     draw.text((x0 + 2, text_y), eval_text, fill=text_color, font=font)
     canvas.save(output_path)
 
+
+def determine_orientation(headers: chess.pgn.Headers) -> chess.Color:
+    """Determines board orientation based on manual setting or PGN username matching."""
+    if FLIP_BOARD_OVERRIDE is not None:
+        return chess.BLACK if FLIP_BOARD_OVERRIDE else chess.WHITE
+
+    black_player = headers.get("Black", "").strip().lower()
+    
+    # Auto-detect if Black's name matches any defined username
+    for uname in MY_USERNAMES:
+        if uname.lower() in black_player:
+            print(f"🔍 Auto-detected '{headers.get('Black')}' as Black. Flipping board perspective.")
+            return chess.BLACK
+            
+    return chess.WHITE
+
+
 def main():
     if not os.path.exists(PGN_FILE):
         print(f"Error: {PGN_FILE} not found!")
@@ -146,7 +178,9 @@ def main():
         print(f"Error: Unable to parse PGN from {PGN_FILE}")
         return
 
-    # Parse initial clock and increment from PGN headers
+    # Determine orientation (White or Black)
+    orientation = determine_orientation(game.headers)
+    
     tc_header = game.headers.get("TimeControl", "")
     base_time, increment = parse_time_control(tc_header)
     
@@ -158,13 +192,13 @@ def main():
     engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
     board = game.board()
     
-    print(f"Processing {PGN_FILE} (TimeControl: '{tc_header}')...")
+    print(f"Processing {PGN_FILE} (Perspective: {'BLACK' if orientation == chess.BLACK else 'WHITE'})...")
     frames_txt_path = os.path.join(OUTPUT_DIR, "frames.txt")
     
     with open(frames_txt_path, "w") as f:
         # Move 0 (Initial Position)
         win_pct, eval_text = evaluate_position(board, engine)
-        svg_data = chess.svg.board(board=board, size=600)
+        svg_data = chess.svg.board(board=board, orientation=orientation, size=600)
         render_frame_with_bar(svg_data, win_pct, eval_text, os.path.join(OUTPUT_DIR, "move_0.png"))
         
         first_move = game.next()
@@ -181,17 +215,17 @@ def main():
             board.push(next_node.move)
             
             win_pct, eval_text = evaluate_position(board, engine)
-            svg_data = chess.svg.board(board=board, lastmove=next_node.move, size=600)
+            svg_data = chess.svg.board(board=board, lastmove=next_node.move, orientation=orientation, size=600)
             
             img_filename = f"move_{move_idx}.png"
             render_frame_with_bar(svg_data, win_pct, eval_text, os.path.join(OUTPUT_DIR, img_filename))
             
             if next_node.variations:
                 following_node = next_node.variations[0]
-                turn = board.turn # Color of player who will make the FOLLOWING move
+                turn = board.turn
                 duration = calculate_move_duration(following_node, turn, prev_clocks, increment)
             else:
-                duration = 5.0 # Final position hold time
+                duration = 5.0
                 
             f.write(f"file '{img_filename}'\n")
             f.write(f"duration {duration:.2f}\n")
@@ -201,6 +235,7 @@ def main():
         
     engine.quit()
     print(f"Done! {move_idx} frames generated in '{OUTPUT_DIR}/'.")
+
 
 if __name__ == "__main__":
     main()

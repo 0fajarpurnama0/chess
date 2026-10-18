@@ -1,0 +1,1 @@
+source chess-env/bin/activate
