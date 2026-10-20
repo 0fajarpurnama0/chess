@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGN to Analytic Board Video</title>
+
+    <!-- CRITICAL: Must be the very first script to enable SharedArrayBuffer for FFmpeg -->
+    <script src="coi-serviceworker-0.1.7.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .panel {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        textarea {
+            width: 100%; height: 150px; background: #2d2d2d; color: #fff;
+            border: 1px solid #444; border-radius: 4px; padding: 10px;
+            font-family: monospace; box-sizing: border-box; resize: vertical;
+        }
+        .controls {
+            display: flex; gap: 20px; align-items: center; margin-top: 15px; flex-wrap: wrap;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        input[type="number"], input[type="text"] {
+            background: #2d2d2d; color: #fff; border: 1px solid #444;
+            padding: 8px; border-radius: 4px;
+        }
+        button {
+            background: #4CAF50; color: white; border: none; padding: 10px 20px;
+            border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover:not(:disabled) { background: #45a049; }
+        button:disabled { background: #555; cursor: not-allowed; color: #888; }
+        
+        .action-buttons { display: flex; gap: 10px; }
+        button.secondary { background: #2196F3; font-size: 14px; padding: 8px 16px;}
+        button.secondary:hover:not(:disabled) { background: #1976d2; }
+        button.primary { background: #E91E63; font-size: 14px; padding: 8px 16px;}
+        button.primary:hover:not(:disabled) { background: #C2185B; }
+        
+        /* Progress Bar */
+        #progress-container { display: none; margin-top: 20px; }
+        .progress-track {
+            width: 100%; background: #333; border-radius: 10px; overflow: hidden; height: 20px;
+        }
+        #progress-bar {
+            height: 100%; background: #4CAF50; width: 0%; transition: width 0.1s linear;
+        }
+        #status-text { margin-top: 8px; font-size: 14px; color: #aaa; text-align: center; }
+
+        /* Gallery */
+        #gallery { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        .frame-preview {
+            display: flex; flex-direction: column; align-items: center;
+            background: #2d2d2d; padding: 10px; border-radius: 6px; width: 180px;
+        }
+        .frame-preview img { width: 100%; border-radius: 4px; border: 1px solid #444; }
+        .frame-preview span { margin-top: 8px; font-size: 12px; color: #ccc; }
+    </style>
+</head>
+<body>
+    <a href="index.html">Return</a> <h1>Analytic Board Exporter</h1>
+    
+    <div class="panel">
+        <label for="pgn-input">Paste PGN Game:</label>
+<textarea id="pgn-input">
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2026.10.08"]
+[Round "?"]
+[White "0fajarpurnama0"]
+[Black "foda89"]
+[Result "1-0"]
+[TimeControl "900+10"]
+[WhiteElo "1637"]
+[BlackElo "1566"]
+[Termination "0fajarpurnama0 won by resignation"]
+[ECO "E60"]
+[EndTime "8:03:00 GMT+0000"]
+[Link "https://www.chess.com/game/live/184993010852?username=0fajarpurnama0&move=0"]
+
+1. d4 {[%clk 0:15:05.9][%timestamp 41]} 1... d5 {[%clk 0:15:06.4][%timestamp 36]} 2. c4 {[%clk 0:15:13.8][%timestamp 21]} 2... c6 {[%clk 0:15:09.3][%timestamp 71]} 3. Nf3 {[%clk 0:15:08.7][%timestamp 151]} 3... Nf6 {[%clk 0:15:17.7][%timestamp 16]} 4. g3 {[%clk 0:15:14.7][%timestamp 40]} 4... g6 {[%clk 0:15:23.2][%timestamp 45]} 5. Bg2 {[%clk 0:15:23.4][%timestamp 13]} 5... Bg7 {[%clk 0:15:31.7][%timestamp 15]} 6. O-O {[%clk 0:15:30.1][%timestamp 33]} 6... O-O {[%clk 0:15:40.8][%timestamp 9]} 7. Nc3 {[%clk 0:15:34.7][%timestamp 54]} 7... Re8 {[%clk 0:15:45.6][%timestamp 52]} 8. Qc2 {[%clk 0:13:23.7][%timestamp 1410]} 8... Bf5 {[%clk 0:15:16.4][%timestamp 392]} 9. Qb3 {[%clk 0:12:59.5][%timestamp 342]} 9... Qd7 {[%clk 0:13:30.2][%timestamp 1162]} 10. Ne5 {[%clk 0:11:51.7][%timestamp 778]} 10... dxc4 {[%clk 0:12:25.8][%timestamp 744]} 11. Qxc4 {[%clk 0:11:01.2][%timestamp 605]} 11... Qc7 {[%clk 0:12:02.5][%timestamp 333]} 12. Qxf7+ {[%clk 0:09:25.5][%timestamp 1057]} 12... Kh8 {[%clk 0:12:04.4][%timestamp 81]} 13. Bf4 {[%clk 0:07:32.3][%timestamp 1232]} 13... Qc8 {[%clk 0:12:09][%timestamp 54]} 14. Qb3 {[%clk 0:06:10.7][%timestamp 916]} 14... Be6 {[%clk 0:12:02.7][%timestamp 163]} 15. d5 {[%clk 0:06:03.3][%timestamp 174]} 15... Nxd5 {[%clk 0:12:01.3][%timestamp 114]} 16. Nxd5 {[%clk 0:06:13.2][%timestamp 1]} 16... cxd5 {[%clk 0:09:02.8][%timestamp 1885]} 17. Bxd5 {[%clk 0:06:23.1][%timestamp 1]} 17... Bxd5 {[%clk 0:09:03.5][%timestamp 93]} 18. Qxd5 {[%clk 0:06:33][%timestamp 1]} 18... e6 {[%clk 0:08:58.3][%timestamp 152]} 19. Qb3 {[%clk 0:04:50][%timestamp 1130]} 19... Kg8 {[%clk 0:08:29][%timestamp 393]} 20. Rac1 {[%clk 0:04:28.8][%timestamp 312]} 20... Qd8 {[%clk 0:08:28.7][%timestamp 103]} 21. Rfd1 {[%clk 0:04:06.5][%timestamp 323]} 21... Qe7 {[%clk 0:08:19.9][%timestamp 188]} 22. Rd3 {[%clk 0:01:58.4][%timestamp 1381]} 22... Na6 {[%clk 0:08:24.2][%timestamp 57]} 23. Qc3 {[%clk 0:01:48][%timestamp 204]} 23... Rac8 {[%clk 0:08:23.3][%timestamp 109]} 24. Qxc8 {[%clk 0:01:49.4][%timestamp 86]} 24... Rxc8 {[%clk 0:08:31.7][%timestamp 16]} 25. Rxc8+ {[%clk 0:01:59.3][%timestamp 1]} 25... Bf8 {[%clk 0:08:34.8][%timestamp 69]} 26. Rdd8 {[%clk 0:01:43.5][%timestamp 258]} 26... g5 {[%clk 0:07:01.6][%timestamp 1032]} 27. Rxf8+ {[%clk 0:01:40.1][%timestamp 134]} 27... Kg7 {[%clk 0:07:10.1][%timestamp 15]} 28. Rf7+ {[%clk 0:01:30.2][%timestamp 199]} 28... Qxf7 {[%clk 0:07:17.6][%timestamp 25]} 29. Nxf7 {[%clk 0:01:40.1][%timestamp 1]} 29... gxf4 {[%clk 0:07:26.4][%timestamp 12]} 30. Nd6 {[%clk 0:01:41.1][%timestamp 90]} 30... fxg3 {[%clk 0:07:23.3][%timestamp 131]} 31. hxg3 {[%clk 0:01:51][%timestamp 1]} 31... b6 {[%clk 0:07:24.3][%timestamp 90]} 32. Ra8 {[%clk 0:01:49.6][%timestamp 114]} 32... Kf6 {[%clk 0:07:29.4][%timestamp 49]} 33. Rxa7 {[%clk 0:01:55.6][%timestamp 40]} 33... Nc5 {[%clk 0:07:38.3][%timestamp 11]} 34. Rxh7 {[%clk 0:02:01.2][%timestamp 44]} 34... Ke5 {[%clk 0:07:46.8][%timestamp 15]} 35. Nc4+ {[%clk 0:02:05.7][%timestamp 55]} 35... Kd4 {[%clk 0:07:51.7][%timestamp 51]} 36. Nxb6 {[%clk 0:02:15.6][%timestamp 1]} 36... e5 {[%clk 0:07:46.6][%timestamp 151]} 37. Rh4+ {[%clk 0:02:13.2][%timestamp 124]} 37... e4 {[%clk 0:07:44.1][%timestamp 125]} 38. e3+ {[%clk 0:02:18.8][%timestamp 44]} 38... Kd3 {[%clk 0:07:49.2][%timestamp 49]} 39. b4 {[%clk 0:02:17.9][%timestamp 109]} 39... Na6 {[%clk 0:07:50][%timestamp 92]} 40. b5 {[%clk 0:02:19][%timestamp 89]} 40... Nb4 {[%clk 0:07:58.5][%timestamp 15]} 41. a4 {[%clk 0:02:27.8][%timestamp 12]} 41... Na2 {[%clk 0:07:52.8][%timestamp 157]} 42. a5 {[%clk 0:02:26.3][%timestamp 115]} 42... Nc3 {[%clk 0:08:01.7][%timestamp 11]} 43. Rh5 {[%clk 0:02:33][%timestamp 33]} 43... Ne2+ {[%clk 0:07:58.6][%timestamp 131]} 44. Kg2 {[%clk 0:02:40.3][%timestamp 27]} 44... Nc3 {[%clk 0:07:52.2][%timestamp 164]} 45. a6 {[%clk 0:02:48.3][%timestamp 20]} 45... Ke2 {[%clk 0:07:52.3][%timestamp 99]} 46. a7 {[%clk 0:02:49.4][%timestamp 89]} 46... Nd1 {[%clk 0:08:01.6][%timestamp 7]} 47. Rf5 {[%clk 0:02:58.4][%timestamp 10]} 47... Nxe3+ {[%clk 0:08:07.9][%timestamp 37]} 48. fxe3 {[%clk 0:03:06.4][%timestamp 20]} 48... Kxe3 {[%clk 0:08:17.3][%timestamp 6]} 49. a8=Q {[%clk 0:03:11.3][%timestamp 51]} 49... Kd2 {[%clk 0:08:26.5][%timestamp 8]} 50. Qxe4 {[%clk 0:03:16.4][%timestamp 49]} 1-0
+</textarea>
+
+        <div class="controls">
+            <div class="input-group">
+                <label for="engine-depth">Lozza Depth</label>
+                <input type="number" id="engine-depth" value="8" min="1" max="20" style="width: 80px;">
+            </div>
+            <div class="input-group">
+                <label for="black-usernames">Auto-Flip Usernames</label>
+                <input type="text" id="black-usernames" value="0fajarpurnama0, fajar purnama" style="width: 250px;">
+            </div>
+            <div class="input-group" style="justify-content: flex-end;">
+                <button id="btn-generate">Generate Frames</button>
+            </div>
+        </div>
+
+        <div id="progress-container">
+            <div class="progress-track"><div id="progress-bar"></div></div>
+            <div id="status-text">Ready...</div>
+        </div>
+    </div>
+
+    <div class="panel" id="output-panel" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0;">Generated Export</h2>
+            <div class="action-buttons">
+                <button id="btn-download-zip" class="secondary">Download ZIP</button>
+                <button id="btn-download-video" class="primary">🎥 Render Video (.mp4)</button>
+            </div>
+        </div>
+        <div id="gallery"></div>
+    </div>
+
+    <!-- Required Dependencies -->
+    <script src="lib/chess-0.12.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <!-- FFmpeg specific script -->
+    <script src="lib/ffmpeg-0.11.6.min.js"></script>
+
+    <!-- Our Exporter Modules -->
+    <script src="js/exporter/parser.js"></script>
+    <script src="js/exporter/evaluator.js"></script>
+    <script src="js/exporter/renderer.js"></script>
+    <script src="js/exporter/pipeline.js"></script>
+
+    <!-- UI Controller Logic -->
+    <script>
+        const btnGenerate = document.getElementById('btn-generate');
+        const btnDownloadZip = document.getElementById('btn-download-zip');
+        const btnDownloadVideo = document.getElementById('btn-download-video');
+        const pgnInput = document.getElementById('pgn-input');
+        
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('status-text');
+        const outputPanel = document.getElementById('output-panel');
+        const gallery = document.getElementById('gallery');
+
+        let generatedData = null;
+        
+        // Initialize FFmpeg
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        const ffmpeg = createFFmpeg({ log: true });
+
+        btnGenerate.addEventListener('click', async () => {
+            const pgn = pgnInput.value.trim();
+            if (!pgn) return alert("Please enter a PGN.");
+
+            const usernames = document.getElementById('black-usernames').value.split(',').map(s => s.trim());
+            const depth = parseInt(document.getElementById('engine-depth').value) || 8;
+
+            btnGenerate.disabled = true;
+            outputPanel.style.display = 'none';
+            gallery.innerHTML = '';
+            progressContainer.style.display = 'block';
+            
+            try {
+                generatedData = await window.ChessApp.Exporter.Pipeline.runBatchExport(
+                    pgn, { usernames, depth }, (prog) => {
+                        progressBar.style.width = prog.percent + '%';
+                        progressBar.style.backgroundColor = '#4CAF50';
+                        statusText.innerText = `Evaluating and rendering frame ${prog.current} of ${prog.total}...`;
+                    }
+                );
+                statusText.innerText = `Complete! ${generatedData.frames.length} frames generated.`;
+                
+                generatedData.frames.forEach(f => {
+                    const div = document.createElement('div');
+                    div.className = 'frame-preview';
+                    div.innerHTML = `<img src="${f.dataUrl}"><span>move_${f.frameIndex}.png (${f.duration}s)</span>`;
+                    gallery.appendChild(div);
+                });
+                outputPanel.style.display = 'block';
+
+            } catch (err) {
+                console.error(err);
+                statusText.innerText = `Error: ${err.message}`;
+            } finally {
+                btnGenerate.disabled = false;
+            }
+        });
+
+        // --------------------------------------------------------
+        // VIDEO GENERATION LOGIC (Thread-Safe & Crash-Free)
+        // --------------------------------------------------------
+        btnDownloadVideo.addEventListener('click', async () => {
+            if (!generatedData || !generatedData.frames.length) return;
+            
+            btnDownloadVideo.disabled = true;
+            btnDownloadZip.disabled = true;
+            btnGenerate.disabled = true;
+            progressContainer.style.display = 'block';
+            progressBar.style.backgroundColor = '#E91E63'; 
+            progressBar.style.width = '0%';
+            
+            try {
+                if (!ffmpeg.isLoaded()) {
+                    statusText.innerText = "Loading FFmpeg core...";
+                    await ffmpeg.load();
+                }
+
+                statusText.innerText = "Writing frames to virtual filesystem...";
+                
+                let framesTxt = "";
+                const writtenFiles = [];
+                
+                // 1. Write frames to virtual memory
+                for (let i = 0; i < generatedData.frames.length; i++) {
+                    const f = generatedData.frames[i];
+                    const filename = `move_${f.frameIndex}.png`;
+                    
+                    ffmpeg.FS('writeFile', filename, await fetchFile(f.dataUrl));
+                    writtenFiles.push(filename);
+                    
+                    const duration = (i === generatedData.frames.length - 1) ? 5.00 : f.duration;
+                    framesTxt += `file '${filename}'\n`;
+                    framesTxt += `duration ${duration.toFixed(2)}\n`;
+                }
+
+                const lastIdx = generatedData.frames[generatedData.frames.length - 1].frameIndex;
+                framesTxt += `file 'move_${lastIdx}.png'\n`;
+
+                ffmpeg.FS('writeFile', 'frames.txt', new TextEncoder().encode(framesTxt));
+                writtenFiles.push('frames.txt');
+
+                // 2. Safe built-in progress tracker (No setLogger)
+                ffmpeg.setProgress(({ ratio }) => {
+                    if (ratio >= 0 && ratio <= 1) {
+                        const percent = Math.round(ratio * 100);
+                        progressBar.style.width = percent + '%';
+                        statusText.innerText = `Encoding MP4 Video... ${percent}%`;
+                    }
+                });
+
+                statusText.innerText = "Encoding MP4 Video... 0%";
+                
+                // 3. Execute FFmpeg with single-threaded safety (-threads 1 prevents WASM pthread crashes)
+                await ffmpeg.run(
+                    '-f', 'concat',
+                    '-safe', '0',
+                    '-i', 'frames.txt',
+                    '-vsync', 'vfr',          // keep concat timestamps, no duplicate frames
+                    '-pix_fmt', 'yuv420p',
+                    '-c:v', 'libx264',
+                    '-preset', 'ultrafast',
+                    '-threads', '1',
+                    '-crf', '26',
+                    '-g', '1',                // optional: every frame is a keyframe, so seeking is exact
+                    '-movflags', '+faststart',
+                    'output.mp4'
+                );
+
+                statusText.innerText = "Finalizing video download...";
+
+                // 4. Read output and trigger browser download
+                const data = ffmpeg.FS('readFile', 'output.mp4');
+                const videoBlob = new Blob([data.buffer], { type: 'video/mp4' });
+                saveAs(videoBlob, 'chess_analytic_game.mp4');
+                
+                // 5. Clean up virtual filesystem memory
+                writtenFiles.push('output.mp4');
+                writtenFiles.forEach(file => {
+                    try { ffmpeg.FS('unlink', file); } catch (e) {}
+                });
+
+                progressBar.style.width = '100%';
+                statusText.innerText = "Video Download Complete!";
+
+            } catch (err) {
+                console.error(err);
+                try { ffmpeg.exit(); } catch (e) {}   // next click will reload a fresh core
+                statusText.innerText = `Video Error: ${err.message}`;
+                alert("Failed to generate video. You can still use the Download ZIP option.");
+            } finally {
+                btnDownloadVideo.disabled = false;
+                btnDownloadZip.disabled = false;
+                btnGenerate.disabled = false;
+            }
+        });
+
+        // --------------------------------------------------------
+        // ZIP GENERATION LOGIC (Preserved)
+        // --------------------------------------------------------
+        btnDownloadZip.addEventListener('click', async () => {
+            if (!generatedData || !generatedData.frames.length) return;
+            
+            const zip = new JSZip();
+            const folder = zip.folder("analytic_frames");
+            let framesTxt = "";
+
+            generatedData.frames.forEach((f, index) => {
+                const filename = `move_${f.frameIndex}.png`;
+                const base64Data = f.dataUrl.split(',')[1];
+                folder.file(filename, base64Data, { base64: true });
+                
+                const duration = index === generatedData.frames.length - 1 ? 5.00 : f.duration;
+                framesTxt += `file '${filename}'\n`;
+                framesTxt += `duration ${duration.toFixed(2)}\n`;
+            });
+            
+            const lastFrameIdx = generatedData.frames[generatedData.frames.length - 1].frameIndex;
+            framesTxt += `file 'move_${lastFrameIdx}.png'\n`;
+            folder.file("frames.txt", framesTxt);
+
+            statusText.innerText = "Zipping files...";
+            btnDownloadZip.disabled = true;
+
+            try {
+                const blob = await zip.generateAsync({ type: "blob" });
+                saveAs(blob, "chess_frames_export.zip");
+                statusText.innerText = "Download triggered.";
+            } catch (err) {
+                console.error(err);
+                alert("Failed to generate ZIP.");
+            } finally {
+                btnDownloadZip.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
