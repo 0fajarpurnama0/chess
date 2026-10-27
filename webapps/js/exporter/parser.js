@@ -18,6 +18,19 @@ window.ChessApp.Exporter.Parser = {
         return null;
     },
 
+    // Parses [%emt H:MM:SS] or [%emt M:SS] or [%emt SS] elapsed move time
+    parseEmt: function(comment) {
+        if (!comment) return null;
+        const match = comment.match(/\[%emt\s+(?:(\d+):)?(?:(\d+):)?(\d+(?:\.\d+)?)\]/);
+        if (match) {
+            const hours = match[1] && match[2] ? parseInt(match[1], 10) : 0;
+            const mins = match[1] && !match[2] ? parseInt(match[1], 10) : (match[2] ? parseInt(match[2], 10) : 0);
+            const secs = parseFloat(match[3]);
+            return hours * 3600 + mins * 60 + secs;
+        }
+        return null;
+    },
+
     parseTimestamp: function(comment) {
         if (!comment) return null;
         const match = comment.match(/\[%timestamp\s+(\d+)\]/);
@@ -69,14 +82,22 @@ window.ChessApp.Exporter.Parser = {
 
             // Find comment for this move if available
             const moveComment = comments[i] ? comments[i].comment : '';
-            const currClk = this.parseClock(moveComment);
+            
+            const emt = this.parseEmt(moveComment);
             const ts = this.parseTimestamp(moveComment);
+            const currClk = this.parseClock(moveComment);
 
             let duration = this.DEFAULT_DURATION;
             const turn = move.color;
             const prevClk = prevClocks[turn];
 
-            if (ts !== null) {
+            // Timing Priority Hierarchy:
+            // 1. [%emt ...] - Explicit Elapsed Move Time
+            // 2. [%timestamp ...] - Explicit timestamp in tenths of a second
+            // 3. [%clk ...] - Calculated delta between remaining clock times
+            if (emt !== null) {
+                duration = Math.max(emt, this.MIN_DURATION);
+            } else if (ts !== null) {
                 duration = Math.max(ts, this.MIN_DURATION);
             } else if (currClk !== null && prevClk !== null) {
                 duration = Math.max(prevClk - currClk + tc.inc, this.MIN_DURATION);
