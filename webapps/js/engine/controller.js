@@ -8,7 +8,7 @@ window.ChessApp.Engine = {
     init: function(enginePath) {
         if (enginePath === 'simple') {
             this.engineType = 'native';
-            // CRUCIAL FIX: Only kill the Lozza worker if the Eval Bar is OFF
+            // Do not terminate worker if evaluation bar is using it
             if (!window.ChessApp.evalAllowed && window.ChessApp.UCI && window.ChessApp.UCI.worker) {
                 window.ChessApp.UCI.worker.terminate();
                 window.ChessApp.UCI.worker = null;
@@ -22,11 +22,10 @@ window.ChessApp.Engine = {
 
     askForMove: function() {
         if (this.isThinking || window.ChessApp.game.game_over()) return;
-        
-        this.isThinking = true;
 
         if (this.engineType === 'native') {
-            const botLevel = document.getElementById('simpleBotSelect').value; 
+            this.isThinking = true;
+            const botLevel = document.getElementById('simpleBotSelect') ? document.getElementById('simpleBotSelect').value : 'random'; 
             
             setTimeout(() => {
                 const chosenMove = window.ChessApp.NativeBots.getMove(window.ChessApp.game, botLevel);
@@ -42,22 +41,18 @@ window.ChessApp.Engine = {
             }, 500);
             
         } else {
+            this.isThinking = true;
             window.ChessApp.UCI.askForMove(window.ChessApp.game);
         }
     },
 
-    // NEW: Spectator Mode for the Evaluation Bar
     evaluateBoard: function() {
-        if (window.ChessApp.game.game_over()) return;
+        if (window.ChessApp.game.game_over() || !window.ChessApp.evalAllowed) return;
         
-        // Ensure Lozza is awake in the background
         if (!window.ChessApp.UCI || !window.ChessApp.UCI.worker) {
             window.ChessApp.UCI.init('lib/lozza.js');
         }
         
-        // Tell Lozza to look at the board, but we won't flag 'isThinking' to true.
-        // This tells our app that we are just analyzing, not waiting for a move to be played.
-        window.ChessApp.UCI.worker.postMessage("position fen " + window.ChessApp.game.fen());
-        window.ChessApp.UCI.worker.postMessage("go depth 10"); // Quick depth for fast UI updates
+        window.ChessApp.UCI.evaluateBoard(window.ChessApp.game);
     }
 };

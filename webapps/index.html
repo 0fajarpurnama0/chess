@@ -121,11 +121,30 @@
       <div id="simple-bot-container" style="display: none; margin-bottom: 10px; justify-content: center; gap: 10px; align-items: center;">
         <span style="font-weight: bold;">Bot Level:</span>
         <select id="simpleBotSelect" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
-          <option value="random" selected>Level 0: Chaos</option>
-          <option value="caveman">Level 1: Caveman</option>
-          <option value="assassin">Level 2: Assassin</option>
-          <option value="scholar">Level 3: Scholar</option>
-          <option value="tactician">Level 4: Tactician</option>
+          <optgroup label="Tier 1: Gimmicks & Flaws">
+            <option value="random" selected>Chaos (Random)</option>
+            <option value="copycat">The Mirror (Copycat)</option>
+            <option value="wanderer">The Marching King (Wanderer)</option>
+            <option value="no_retreat">The Commando (No Retreat)</option>
+            <option value="obsessive">Tunnel Vision (Obsessive)</option>
+          </optgroup>
+          
+          <optgroup label="Tier 2: Hyper-Focused Extremists">
+            <option value="pacifist">The Pacifist (No Captures)</option>
+            <option value="caveman">The Caveman (First Capture)</option>
+            <option value="assassin">The Assassin (Greedy Captures)</option>
+            <option value="check_seeker">Check Hunter (Check-Seeker)</option>
+            <option value="pawn_pusher">The Farmer (Pawn Pusher)</option>
+            <option value="edge_lord">The Flanker (Edge Lord)</option>
+          </optgroup>
+
+          <optgroup label="Tier 3: Fundamental Logic">
+            <option value="textbook">The Purist (Textbook Opening)</option>
+            <option value="defender">Self-Preservation (Defender)</option>
+            <option value="scholar">The Scholar (Material Count)</option>
+            <option value="strategist">The Strategist (Center Control)</option>
+            <option value="tactician">The Tactician (2-Ply Lookahead)</option>
+          </optgroup>
         </select>
       </div>
 
