@@ -1,2 +1,1 @@
-# chess
-Integrating DeFi with chess.
+Chess applications vibe coded and open source live on [https://fajarpurnama.com/projects/webapp/chess/](https://fajarpurnama.com/projects/webapp/chess/).

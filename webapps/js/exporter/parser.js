@@ -62,9 +62,12 @@ window.ChessApp.Exporter.Parser = {
         const tc = this.parseTimeControl(headers.TimeControl);
 
         const history = tempGame.history({ verbose: true });
+        
+        // Bulletproof comment mapping by FEN to prevent de-syncs
         const comments = tempGame.get_comments ? tempGame.get_comments() : [];
+        const commentMap = {};
+        comments.forEach(c => { commentMap[c.fen] = c.comment; });
 
-        // Build position list starting from move 0
         const replayGame = new Chess();
         const timeline = [{
             moveIndex: 0,
@@ -80,8 +83,8 @@ window.ChessApp.Exporter.Parser = {
             const move = history[i];
             replayGame.move(move);
 
-            // Find comment for this move if available
-            const moveComment = comments[i] ? comments[i].comment : '';
+            // Fetch comment based on the exact board state
+            const moveComment = commentMap[replayGame.fen()] || '';
             
             const emt = this.parseEmt(moveComment);
             const ts = this.parseTimestamp(moveComment);
@@ -91,16 +94,22 @@ window.ChessApp.Exporter.Parser = {
             const turn = move.color;
             const prevClk = prevClocks[turn];
 
-            // Timing Priority Hierarchy:
-            // 1. [%emt ...] - Explicit Elapsed Move Time
-            // 2. [%timestamp ...] - Explicit timestamp in tenths of a second
-            // 3. [%clk ...] - Calculated delta between remaining clock times
             if (emt !== null) {
                 duration = Math.max(emt, this.MIN_DURATION);
             } else if (ts !== null) {
                 duration = Math.max(ts, this.MIN_DURATION);
-            } else if (currClk !== null && prevClk !== null) {
-                duration = Math.max(prevClk - currClk + tc.inc, this.MIN_DURATION);
+            } else if (currClk !== null) {
+                if (prevClk !== null) {
+                    duration = Math.max(prevClk - currClk + tc.inc, this.MIN_DURATION);
+                } else {
+                    // FIX: If [TimeControl] is missing, guess Move 1's starting clock 
+                    // by rounding up to the nearest minute.
+                    const guessedBase = Math.ceil(currClk / 60) * 60;
+                    if (guessedBase > currClk) {
+                        duration = Math.max(guessedBase - currClk, this.MIN_DURATION);
+                    }
+                }
+                // CRITICAL: Always update the clock so Move 2 actually works!
                 prevClocks[turn] = currClk;
             }
 

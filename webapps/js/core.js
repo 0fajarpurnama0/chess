@@ -125,14 +125,19 @@ window.ChessApp.updateStatus = function() {
         statusDisplay.innerText = "LOCAL PLAY - " + statusText;
         moveInput.disabled = false; submitBtn.disabled = false;
         moveInput.placeholder = moveColor + "'s turn! Type a move...";
-        if (!window.ChessApp.game.game_over()) moveInput.focus();
+        if (!window.ChessApp.game.game_over()) 
+            if (!isMobile) {
+                moveInput.focus();
+            }
         window.ChessApp.updateCheatSheet();
     } else {
         if (isMyTurn && !window.ChessApp.game.game_over()) {
             statusDisplay.innerText = "YOUR TURN (" + (window.ChessApp.myColor==='w'?'White':'Black') + ") - " + statusText;
             moveInput.disabled = false; submitBtn.disabled = false;
             moveInput.placeholder = "Your turn! Type a move...";
-            moveInput.focus();
+            if (!isMobile) {
+                moveInput.focus();
+            }
             window.ChessApp.updateCheatSheet();
         } else {
             statusDisplay.innerText = "OPPONENT's TURN - " + statusText;
