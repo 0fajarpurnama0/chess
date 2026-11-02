@@ -39,12 +39,14 @@ document.getElementById('localPlayBtn').addEventListener('click', () => {
         window.ChessApp.board.resize();
         window.ChessApp.updateStatus();
         
-        // Start Timer explicitly after DOM load
-        const timeSetting = window.ChessApp.getTimeSetting();
+        const timeConfig = window.ChessApp.getTimeSetting();
         if (window.ChessApp.Timer) {
-            window.ChessApp.Timer.init(timeSetting);
+            // FIX: Pass base and inc separately
+            window.ChessApp.Timer.init(timeConfig.base, timeConfig.inc);
             window.ChessApp.Timer.start();
         }
+
+        window.ChessApp.lastMoveTime = Date.now();
     }, 10);
 });
 
@@ -81,11 +83,14 @@ document.getElementById('playComputerBtn').addEventListener('click', () => {
         window.ChessApp.board.resize();
         window.ChessApp.updateStatus();
 
-        const timeVal = document.getElementById('timeControlSelect').value;
-        if (timeVal !== "none" && window.ChessApp.Timer) {
-            window.ChessApp.Timer.init(window.ChessApp.getTimeSetting()); 
+        const timeConfig = window.ChessApp.getTimeSetting();
+        if (timeConfig.base !== 'unlimited' && window.ChessApp.Timer) {
+            // FIX: Pass base and inc separately
+            window.ChessApp.Timer.init(timeConfig.base, timeConfig.inc); 
             window.ChessApp.Timer.start();
         }
+        
+        window.ChessApp.lastMoveTime = Date.now();
     }, 10);
 });
 
@@ -132,15 +137,39 @@ document.getElementById('timeControlSelect').addEventListener('change', function
     customInput.style.display = (this.value === 'custom') ? 'inline-block' : 'none';
 });
 
+// Updated helper function in js/app.js
 window.ChessApp.getTimeSetting = function() {
     const selectVal = document.getElementById('timeControlSelect').value;
-    if (selectVal === 'unlimited') return 'unlimited';
+    
+    if (selectVal === 'unlimited') {
+        return { base: 'unlimited', inc: 0 };
+    }
+    
     if (selectVal === 'custom') {
         const mins = parseInt(document.getElementById('customTimeInput').value, 10);
-        return (isNaN(mins) || mins <= 0 ? 15 : mins) * 60; // Fallback to 15 mins
+        const incSecs = parseInt(document.getElementById('customIncInput').value, 10);
+        
+        const baseSecs = (isNaN(mins) || mins <= 0 ? 15 : mins) * 60;
+        const inc = isNaN(incSecs) || incSecs < 0 ? 0 : incSecs;
+        
+        return { base: baseSecs, inc: inc };
     }
-    return selectVal;
+
+    // Handles preset strings like "180+2" or "300+5"
+    const parts = selectVal.split('+');
+    return {
+        base: parseInt(parts[0], 10),
+        inc: parts[1] ? parseInt(parts[1], 10) : 0
+    };
 };
+
+// UI listener for the custom input wrapper visibility
+document.getElementById('timeControlSelect').addEventListener('change', function() {
+    const customWrapper = document.getElementById('customTimeWrapper');
+    if (customWrapper) {
+        customWrapper.style.display = (this.value === 'custom') ? 'flex' : 'none';
+    }
+});
 
 // Reset Board
 document.getElementById('resetBtn').addEventListener('click', () => {
@@ -148,10 +177,13 @@ document.getElementById('resetBtn').addEventListener('click', () => {
         if (confirm("Reset the board to the starting position?")) {
             window.ChessApp.game.reset();
             window.ChessApp.board.start();
+            window.ChessApp.lastMoveTime = Date.now(); // Reset EMT tracker
             
+            const timeConfig = window.ChessApp.getTimeSetting();
             if (window.ChessApp.Timer) {
-                window.ChessApp.Timer.init(window.ChessApp.getTimeSetting());
-                window.ChessApp.Timer.start(); // Restart clock
+                // FIX: Pass base and inc separately
+                window.ChessApp.Timer.init(timeConfig.base, timeConfig.inc);
+                window.ChessApp.Timer.start();
             }
             window.ChessApp.updateStatus();
         }
@@ -159,10 +191,12 @@ document.getElementById('resetBtn').addEventListener('click', () => {
         if (confirm("Reset the game against the bot?")) {
             window.ChessApp.game.reset();
             window.ChessApp.board.start();
+            window.ChessApp.lastMoveTime = Date.now(); // Reset EMT tracker
             
+            const timeConfig = window.ChessApp.getTimeSetting();
             if (window.ChessApp.Timer) {
-                window.ChessApp.Timer.init(window.ChessApp.getTimeSetting());
-                // Only start clock immediately if human is white. Otherwise wait for bot.
+                // FIX: Pass base and inc separately
+                window.ChessApp.Timer.init(timeConfig.base, timeConfig.inc);
                 if (window.ChessApp.myColor === 'w') window.ChessApp.Timer.start(); 
             }
             
@@ -173,7 +207,6 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             }
         }
     } else if (window.ChessApp.requestNetworkReset) {
-        // Delegate P2P resets to the networking file
         window.ChessApp.requestNetworkReset();
     }
 });

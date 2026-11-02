@@ -24,7 +24,40 @@ window.ChessApp.handleMove = function(moveText, isRemote = false) {
 
     // Attempt to execute the move in the game logic
     const move = window.ChessApp.game.move(moveText);
-    if (move === null) return false; // Invalid move
+    if (move === null) return false;
+
+    // --- APPLY TIME INCREMENT ---
+    if (window.ChessApp.Timer && window.ChessApp.Timer.isEnabled) {
+        // Grant increment to the side that just moved
+        window.ChessApp.Timer.addIncrement(move.color);
+    }
+    
+    // --- INJECT PGN TIMING COMMENTS ---
+    const now = Date.now();
+    if (!window.ChessApp.lastMoveTime) window.ChessApp.lastMoveTime = now;
+    
+    const elapsedSec = (now - window.ChessApp.lastMoveTime) / 1000;
+    window.ChessApp.lastMoveTime = now; // Reset for the next player's turn
+
+    const formatHms = (sec) => {
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = Math.floor(sec % 60);
+        return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    };
+
+    let timeTags = `[%emt ${formatHms(elapsedSec)}]`;
+
+    if (window.ChessApp.Timer && window.ChessApp.Timer.isEnabled) {
+        // move.color is the piece that just moved. We grab their remaining time.
+        const remaining = (move.color === 'w') ? window.ChessApp.Timer.timeW : window.ChessApp.Timer.timeB;
+        timeTags += ` [%clk ${formatHms(remaining)}]`;
+    }
+
+    // Preserve any existing comments (if loading from an external PGN) and append our tags
+    const existingComment = window.ChessApp.game.get_comment();
+    window.ChessApp.game.set_comment(existingComment ? `${existingComment} ${timeTags}` : timeTags);
+    // ---------------------------------------
 
     // --- A. Visual & Audio Polish ---
     if (window.ChessApp.Speech) window.ChessApp.Speech.speakMove(move);
@@ -61,7 +94,7 @@ window.ChessApp.handleMove = function(moveText, isRemote = false) {
         }
     }
 
-    // NEW: Always trigger background eval if allowed (works for P2P, Local, and Simple Bots!)
+    // Always trigger background eval if allowed (works for P2P, Local, and Simple Bots!)
     if (window.ChessApp.evalAllowed) {
         setTimeout(() => { window.ChessApp.Engine.evaluateBoard(); }, 100);
     }
@@ -75,6 +108,7 @@ window.ChessApp.handleMove = function(moveText, isRemote = false) {
 // ==========================================
 
 window.ChessApp.updateStatus = function() {
+    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
     const statusDisplay = document.getElementById('status');
     const moveInput = document.getElementById('moveInput');
     const submitBtn = document.getElementById('submitBtn');

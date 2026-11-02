@@ -70,7 +70,9 @@ peer.on('connection', (connection) => {
     window.ChessApp.myColor = chosen;
     
     if (window.ChessApp.Timer) {
-        window.ChessApp.Timer.init(window.ChessApp.getTimeSetting());
+        // FIX: Extract base and inc from the time setting object
+        const timeConfig = window.ChessApp.getTimeSetting();
+        window.ChessApp.Timer.init(timeConfig.base, timeConfig.inc);
     }
 
     setupConnection(true); 
@@ -119,7 +121,10 @@ function setupConnection(isHost) {
             // --- A. Setup & Gameplay ---
             case 'assignColor':
                 window.ChessApp.myColor = data.color;
-                if (window.ChessApp.Timer) window.ChessApp.Timer.init(data.time);
+                if (window.ChessApp.Timer) {
+                    // FIX: Unpack the time object sent by the host
+                    window.ChessApp.Timer.init(data.time.base, data.time.inc);
+                }
                 finalizeConnectionUI();
                 break;
 
